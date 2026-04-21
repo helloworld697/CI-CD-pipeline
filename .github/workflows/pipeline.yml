@@ -19,8 +19,13 @@ jobs:
           node-version: '20'
           
       - name: Install dependencies        
-        run: npm install
+        run: npm install:all
         
       - name: Check style
         run: npm run lint
 #just to trigger this eslint test
+      - name: Build
+        run: npm run build
+      
+      - name: Run test
+        run: npm run test
