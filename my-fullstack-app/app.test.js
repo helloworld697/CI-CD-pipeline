@@ -1,6 +1,6 @@
 // app.test.js
 const multiply = (a, b) => {
-  return a + b; 
+  return a * b; 
 };
 
 test('multiplies 2 * 2 to equal 4', () => {
