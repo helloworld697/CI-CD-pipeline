@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]    
 
 jobs:
   simple_deployment_pipeline:
@@ -32,11 +35,7 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run E2E tests
-        run: npm run test:e2e
-      
-      - name: Run E2E tests
-        run: npm run test:e2e
-        
+        run: npm run test:e2e        
       
       - uses: actions/upload-artifact@v4
         if: always()
@@ -48,4 +47,15 @@ jobs:
         if: ${{ github.event_name == 'push' && success() }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}  
         
-
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Create Tag
+        if: ${{ github.event_name == 'push' && success() }}
+        uses: anothrNick/github-tag-action@1.71.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
