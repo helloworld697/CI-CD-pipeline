@@ -59,3 +59,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+    # This comment is just to trigger the tag creation during PR merge.
