@@ -12,4 +12,3 @@ backend/dist/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
-test-results/
