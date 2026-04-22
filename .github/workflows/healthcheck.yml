@@ -1,0 +1,21 @@
+name: Periodic Health Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' 
+
+jobs:
+  health_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: echo "hello!"
+
+      - name: Check the live pokemon app
+        uses: jtalk/url-health-check-action@v3
+        with:
+          url: https://ci-cd-pipeline-e3qp.onrender.com/health
+          
+          max-attempts: 3
+          retry-delay: 5s
