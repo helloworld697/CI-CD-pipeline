@@ -44,19 +44,20 @@ jobs:
           path: my-fullstack-app/playwright-report/
 
   deploy:      
-      - name: Trigger deployment
         needs: [simple_deployment_pipeline]
+        runs-on: ubuntu-latest
         if: ${{ github.event_name == 'push' && success() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-        run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}  
+        steps:
+          - name: Trigger Deployment
+            run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}  
         
   tag_release:
-    needs: [simple_deployment_pipeline, deploy]
+    needs: [deploy]
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && success() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}  
     steps:
-      - uses: actions/checkout@v4
-      
+      - uses: actions/checkout@v4      
       - name: Create Tag
-        if: ${{ github.event_name == 'push' && success() && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         uses: anothrNick/github-tag-action@1.71.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
