@@ -1,0 +1,1 @@
+This is a sipmple Full Stack App made for CI/CD pipeline exercise.
